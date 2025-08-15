@@ -34,3 +34,5 @@ to cerat any prediction model we have to follow this 10 steps
 #  - AUC ROC Curve
 
 10. Data Visualization  
+
+11. Make a app using Streamlit of the model
