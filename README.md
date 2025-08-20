@@ -14,6 +14,12 @@ to cerat any prediction model we have to follow this 10 steps
 
 4. Segregate the data into taining and testing (validation)datasets 
 
+   # from sklearn.model_selection import train_test_split   --> 
+    we use this function to segrigate the data into traning and testing data 
+   # X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.15,random_state=42)
+
+    random_state can be use to contain the randomness and test_size is use to get the percentage of the data into test 
+
 5. Normalize(Scaling)the data (inputs only)
 
 6. Import a Classifier/Regressor/Clusterer. Create an object of the imported module
