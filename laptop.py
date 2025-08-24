@@ -40,10 +40,10 @@ if st.button("PREDICT PRICE"):
     # Build query as DataFrame with SAME column names as training data
     query_df = pd.DataFrame([[company, type, cpu, ram, hdd, ssd, hybrid, 
                               flash_storage, gpu, opsys, weight, touchscreen, ips, PPI]],
-                            columns=['Company','TypeName','Cpu','Ram','Memory','HDD',
+                            columns=['Company','TypeName','Cpu','Ram','HDD',
                                      'SSD','Hybrid','Flash_Storage','Gpu','OpSys',
                                      'Weight','Touchscreen','IPS','PPI'])
 
     # Predict
     op = np.exp(pipe.predict(query_df))
-    st.subheader(f"The Predicted Price of the Laptop with above configuration is ₹{str(round(op[0]))}")
+    st.subheader(f"The Predicted Price of the Laptop with above configuration is ₹{round(op[0])}")
