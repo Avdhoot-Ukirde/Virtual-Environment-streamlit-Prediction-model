@@ -13,7 +13,6 @@ company = st.selectbox("Brand",df['Company'].unique(),index = 3)
 type = st.selectbox("Type of Laptop",df['TypeName'].unique(),index = 1)
 cpu = st.selectbox("Cpu Name",df['Cpu'].unique(), index=0)
 ram = st.selectbox("RAM",np.array([2,4,6,8,12,16,24,32,64,128]),index = 3)
-memory =  st.selectbox("Memory Storage",df['Memory'].unique(),index = 4)
 hdd = st.selectbox("HDD Storage",np.array([0,128,500,1000,2000]), index = 2)
 ssd= st.selectbox("SSD Storage",np.array([0,8,16,32,64,128,180,240,256,512,768,1000,1024]),index = 9)
 hybrid = st.selectbox("Hybrid",np.array([0,508,1000]),index = 2)
@@ -39,7 +38,7 @@ if st.button("PREDICT PRICE"):
     PPI = ((X_res**2) + (Y_res**2))**0.5 / screen_size
 
     # Build query as DataFrame with SAME column names as training data
-    query_df = pd.DataFrame([[company, type, cpu, ram, memory, hdd, ssd, hybrid, 
+    query_df = pd.DataFrame([[company, type, cpu, ram, hdd, ssd, hybrid, 
                               flash_storage, gpu, opsys, weight, touchscreen, ips, PPI]],
                             columns=['Company','TypeName','Cpu','Ram','Memory','HDD',
                                      'SSD','Hybrid','Flash_Storage','Gpu','OpSys',
