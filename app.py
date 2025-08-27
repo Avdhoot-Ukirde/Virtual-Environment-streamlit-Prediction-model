@@ -1,18 +1,27 @@
-
 import streamlit as st
-import joblib
+import pickle
+import requests
 
-# Title and description
-st.header("This is a Salary Prediction Model Based on Years of Experience")
-st.caption("This ML model was designed with a sample dataset obtained from Kaggle. Linear Regression was the algorithm used to make the model.")
+movies=pickle.load(open('movie_list.pkl','rb'))
+similarity=pickle.load(open('similarity.pkl','rb'))
 
-# Load saved model
-model = joblib.load('lr_model')  # Make sure you saved it earlier using joblib.dump(model, 'lr_model.pkl')
+def fetch_poster(movie_id):
+  url='https://api.themoviedb.org/3/movie/{}?api_key=2736a08daef7a534d3cf2d8c371e0427&language=en-US'.format(movie_id)
+  data=requests.get(url)
+  data=data.json()
+  poster_path=data['poster_path']
+  full_path="https://image.tmdb.org/t/p/w500"+data['poster_path']
+  return full_path
 
-# User input
-years = st.slider("Enter the number of years of experience", min_value=0.0, max_value=20.0, value=5.0, step=0.1)
+def recommend(movie):
+  index=movies[movies['title']==movie].index[0]
+  distances=sorted(list(enumerate(similarity[index])),key=lambda x:x[1],reverse=True)
+  recommended_movie_names=[]
+  recommended_movie_posters=[]
 
-# Prediction
-if st.button("PREDICT"):
-    op = model.predict([[years]])  # Predict using model
-    st.header(f"The estimated salary for a person with {years} years of experience is ₹ {round(op[0], 2)}")
+  for i in distances[1:11]:
+    movie_id=movies.iloc[i[0]].movie_id
+    recommended_movie_names.append(movies.iloc[i[0]].title)
+    recommended_movie_posters.append(fetch_poster(movie_id))
+  return recommended_movie_names,recommended_movie_posters
+
