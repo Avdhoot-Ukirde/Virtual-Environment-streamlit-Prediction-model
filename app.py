@@ -1,17 +1,33 @@
 import streamlit as st
 import pickle
 import requests
+import joblib
+
+st.set_page_config(
+    page_title="Movie Recommender",
+    page_icon="🎬",
+    layout="wide"
+)
 
 movies=pickle.load(open('movie_list.pkl','rb'))
-similarity=pickle.load(open('similarity.pkl','rb'))
+similarity = joblib.load('similarity_compressed.pkl')
+
 
 def fetch_poster(movie_id):
-  url='https://api.themoviedb.org/3/movie/{}?api_key=2736a08daef7a534d3cf2d8c371e0427&language=en-US'.format(movie_id)
-  data=requests.get(url)
-  data=data.json()
-  poster_path=data['poster_path']
-  full_path="https://image.tmdb.org/t/p/w500"+data['poster_path']
-  return full_path
+    api_key = "d07d0518e173b028b74dd7bc809ec9e7"
+    url = f"https://api.themoviedb.org/3/movie/{int(movie_id)}?api_key={api_key}&language=en-US"
+    response = requests.get(url)
+    data = response.json()
+
+    if data.get("status_code") == 7:
+        print("❌ Invalid TMDB API key")
+        return "https://via.placeholder.com/500x750?text=API+Key+Invalid"
+
+    if data.get("poster_path"):
+        return "https://image.tmdb.org/t/p/w500" + data["poster_path"]
+
+    return "https://via.placeholder.com/500x750?text=No+Poster"
+
 
 def recommend(movie):
   index=movies[movies['title']==movie].index[0]
